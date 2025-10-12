@@ -34,7 +34,7 @@ npm install @toolwind/tagged-combinators
 
 Then add it to your Tailwind config:
 
-```ts
+```css
 /* globals.css (Tailwind v4) */
 @plugin "@toolwind/tagged-combinators";
 ```
