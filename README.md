@@ -31,7 +31,7 @@ Examples: `*/option`, `**/.active`, `*/button[aria-label]`.
   <span class="active">test</span>
 </div>
 ```
-Open this example in Tailwind Play: https://play.tailwindcss.com/h5EWjqbB85
+Open this example in Tailwind Play: https://play.tailwindcss.com/0AXQLqxOqW
 
 ## Installation
 
