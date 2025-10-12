@@ -1,6 +1,6 @@
 {
   "name": "@toolwind/tagged-combinators",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tagged combinator support for Tailwind CSS",
   "type": "module",
   "source": "index.ts",
