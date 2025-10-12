@@ -1,5 +1,14 @@
 <h1 align="center">Tagged Combinators for Tailwind CSS</h1>
 
+<div align="center">
+
+[![minified size](https://img.shields.io/bundlephobia/min/@toolwind/tagged-combinators)](https://bundlephobia.com/package/@toolwind/tagged-combinators)
+[![license](https://img.shields.io/github/license/brandonmcconnell/@toolwind/tagged-combinators?label=license)](https://github.com/brandonmcconnell/@toolwind/tagged-combinators/blob/main/LICENSE)
+[![version](https://img.shields.io/npm/v/@toolwind/tagged-combinators)](https://www.npmjs.com/package/@toolwind/tagged-combinators)
+[![twitter](https://img.shields.io/twitter/follow/branmcconnell)](https://twitter.com/branmcconnell)
+
+</div>
+
 This plugin adds slash-modifier tagging support to Tailwind’s built-in child (`*:`) and descendant (`**:`) variants. Keep using them as usual, and optionally filter which children/descendants match using a plain selector via `/selector` — no arbitrary variants needed.
 
 Examples: `*/option`, `**/.active`, `*/button[aria-label]`.
