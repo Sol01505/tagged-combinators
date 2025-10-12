@@ -1,22 +1,43 @@
 <h1 align="center">Tagged Combinators for Tailwind CSS</h1>
 
-Declarative child and descendant targeting with optional selector tags.
+This plugin adds slash-modifier tagging support to Tailwind’s built-in child (`*:`) and descendant (`**:`) variants. Keep using them as usual, and optionally filter which children/descendants match using a plain selector via `/selector` — no arbitrary variants needed.
 
-This plugin exposes two ergonomic variants that mirror CSS combinators:
+Examples: `*/option`, `**/.active`, `*/button[aria-label]`.
 
-- `*:` — direct children (like `& > *`), optionally tagged to filter which children
-- `**:` — any descendants (like `&  *`), optionally tagged to filter which descendants
-
-Use them as-is (to match all children/descendants) or “tag” them with a selector to filter which ones you want to style.
+```html
+<div class="*:border-2 *:border-blue-500 */ol:bg-red-100 */ul:bg-green-100 odd:**/li:font-bold">
+  <ul class="">
+    <li>CSS</li>
+    <li>Good</li>
+  </ul>
+  <ol>
+    <li>Tailwind</li>
+    <li>Better</li>
+  </ol>
+</div>
+<div class="*/button[aria-label]:italic">
+  <button type="button" aria-label>test</button>
+</div>
+<div class="**/span.active:text-violet-500">
+  <span class="active">test</span>
+</div>
+```
+Open this example in Tailwind Play: https://play.tailwindcss.com/h5EWjqbB85
 
 ## Installation
+
+First, install the package:
 
 ```bash
 npm install @toolwind/tagged-combinators
 ```
 
-Then enable it:
+Then add it to your Tailwind config:
 
+```ts
+/* globals.css (Tailwind v4) */
+@plugin "@toolwind/tagged-combinators";
+```
 ```js
 // tailwind.config.js (Tailwind v3)
 module.exports = {
@@ -24,30 +45,17 @@ module.exports = {
 }
 ```
 
-```ts
-// tailwind.config.ts (Tailwind v4)
-import taggedCombinators from '@toolwind/tagged-combinators'
-
-export default {
-  plugins: [taggedCombinators],
-}
-```
-
 ## Why not just use arbitrary variants?
 
-You can target children/descendants with Tailwind’s arbitrary variants, but it’s verbose and easy to get wrong with spacing/escaping:
+You can do this with Tailwind’s arbitrary variants, but the syntax is noisier:
 
 ```html
 <!-- Arbitrary variants -->
-<div class="[&>*]:text-sm [&>*:first-child]:font-medium [&>button:hover]:text-red-600"></div>
+<div class="[&>*]:text-sm [&>option]:font-bold [&_span.active]:text-violet-500"></div>
 
 <!-- Tagged combinators (this plugin) -->
-<div class="*:text-sm *-[*:first-child]:font-medium *-[button:hover]:text-red-600"></div>
+<div class="*:text-sm */option:font-bold **/span.active:text-violet-500"></div>
 ```
-
-- **Less punctuation**: no `&`, no manual `>` / space combinators, no double `&&` tricks.
-- **Readable intent**: `*:` and `**:` communicate “direct child” and “descendant” at a glance.
-- **Selector tagging**: put the selector inside the tag when you need precision: `*-[button]`, `**-[.item input:checked]`.
 
 ## Usage
 
@@ -55,73 +63,42 @@ You can target children/descendants with Tailwind’s arbitrary variants, but it
 
 ```html
 <!-- Direct children (all) -->
-<div class="*:text-sm">…</div>           <!-- & > * -->
+<div class="*:text-sm">…</div> <!-- & > * -->
 
 <!-- Direct children (filtered) -->
-<div class="*-button:text-sm">…</div>    <!-- & > button -->
-<div class="*-[.primary]:text-sm">…</div><!-- & > .primary -->
+<div class="*/button:text-sm">…</div> <!-- & > button -->
+<div class="*/.primary:text-sm">…</div> <!-- & > .primary -->
 
 <!-- Any descendants -->
-<section class="**:mt-2">…</section>     <!-- &  * -->
-<section class="**-input:mt-2">…</section><!-- &  input -->
-<section class="**-[a.active]:underline">…</section>
+<section class="**:mt-2">…</section> <!-- & * -->
+<section class="**/input:mt-2">…</section> <!-- & input -->
+<section class="**/.active:underline">…</section> <!-- & .active -->
 ```
 
-You can place complex selectors inside the tag:
+You can tag most selectors (no bracket syntax required): tags, classes, attributes, etc.
 
 ```html
-<div class="*-[input[type='checkbox']:checked]:opacity-50"></div>
-<div class="**-[.card .cta:hover]:text-blue-600"></div>
+<div class="*/button:hover:text-red-600"></div>
+<div class="**/a.active:underline"></div>
 ```
 
-### Targeting parent state vs child state
-
-- **Parent state** (e.g., only when the parent is hovered):
-
-  - Tailwind v4: `hover:*-[button]:text-red-600` → `&:hover > button { … }`
-  - Tailwind v3: `*-[button]:hover:text-red-600` → `&:hover > button { … }`
-
-- **Child state** (e.g., only when the child is hovered):
-
-  Put the state inside the tag so it applies to the child selector directly. This works the same in v3 and v4:
-
-  ```html
-  <div class="*-[button:hover]:text-red-600"></div> <!-- & > button:hover { … } -->
-  <div class="**-[a:focus-visible]:underline"></div>
-  ```
-
-### Tailwind v3 vs v4 stacking order
-
-When stacking these variants with other variants, Tailwind’s ordering rules changed in v4. For parent state, the order is reversed between versions:
-
-```html
-<!-- Parent hovered, style direct child buttons -->
-<!-- v4 --> <div class="hover:*-[button]:text-red-600"></div>
-<!-- v3 --> <div class="*-[button]:hover:text-red-600"></div>
-
-<!-- Parent dark mode, style any descendant links -->
-<!-- v4 --> <article class="dark:**-[a]:text-slate-200"></article>
-<!-- v3 --> <article class="**-[a]:dark:text-slate-200"></article>
-```
-
-If you want the state on the child itself, put it inside the tag (no reversal needed): `*-[button:hover]:…`, `**-[a:focus]:…`.
-
-## Side‑by‑side with arbitrary variants
-
-```html
-<!-- Arbitrary variants -->
-<div class="[&>form:valid]:bg-green-400 [&>button:hover]:text-red-600"></div>
-
-<!-- Tagged combinators (same intent) -->
-<div class="*-[form:valid]:bg-green-400 *-[button:hover]:text-red-600"></div>
-```
+One exception is pseudo classes, as the `:` conflicts with Tailwind's own variant syntax.
 
 ## Notes
 
-- Without a tag, `*:` compiles to `& > *` and `**:` compiles to `&  *`.
-- With a tag, the tag replaces `*` on the right side of the combinator.
-- Use bracketed tags for complex selectors: `*-[.item input:checked]`.
+- Without a tag, `*:` compiles to `& > *` and `**:` compiles to `& *`. This syntax is built into Tailwind natively and this plugin preserves it without any conflicts.
+- Tag using the slash modifier — no brackets needed: `*/button`, `**/.active`, `*/button:hover`.
 
 ---
 
-If you find this useful, issues and PRs are welcome.
+I hope you find `@toolwind/tagged-combinators` a valuable addition to your projects. If you have any issues or suggestions, don't hesitate to open an issue or pull request.
+
+If you liked this, you might also like my other Tailwind CSS plugins:
+* [@toolwind/signals](https://github.com/@toolwind/signals): Apply styles based on parent or ancestor state, a state-driven alterative to groups
+* [@toolwind/multi](https://github.com/@toolwind/multi): Group utilities together by variant
+* [@toolwind/mixins](https://github.com/@toolwind/mixins): Construct reusable & aliased sets of utilities inline
+* [@toolwind/selector-patterns](https://github.com/@toolwind/selector-patterns): Dynamic CSS selector patterns
+* [@toolwind/js](https://github.com/@toolwind/js): Effortless build-time JS script injection
+* [@toolwind/directional-shadows](https://github.com/@toolwind/directional-shadows): Supercharge your shadow utilities with added directional support (includes directional `shadow-border` utilities too ✨)
+* [@toolwind/default-shades](https://github.com/@toolwind/default-shades): Default shades for simpler color utility classes
+* [@toolwind/lerp-colors](https://github.com/@toolwind/lerp-colors): Expand your color horizons and take the fuss out of generating new—or expanding existing—color palettes
