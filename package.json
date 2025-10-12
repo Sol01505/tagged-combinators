@@ -1,7 +1,7 @@
 {
-  "name": "tailwindcss-members",
+  "name": "@toolwind/tagged-combinators",
   "version": "0.0.4",
-  "description": "Grouped utility support for Tailwind CSS",
+  "description": "Tagged combinator support for Tailwind CSS",
   "type": "module",
   "source": "index.ts",
   "exports": {
@@ -23,16 +23,27 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brandonmcconnell/tailwindcss-members.git"
+    "url": "git+https://github.com/toolwind/tagged-combinators.git"
   },
   "keywords": [
     "css",
     "utility-classes",
-    "group",
-    "groups",
-    "grouping",
-    "member",
-    "members",
+    "tag",
+    "tagged",
+    "combinator",
+    "combinators",
+    "child",
+    "children",
+    "descendant",
+    "descendants",
+    "direct",
+    "direct-child",
+    "direct-children",
+    "direct-descendant",
+    "direct-descendants",
+    "any",
+    "any-descendant",
+    "any-descendants",
     "plugin",
     "plugins",
     "tailwind",
@@ -41,9 +52,9 @@
   "author": "Brandon McConnell",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brandonmcconnell/tailwindcss-members/issues"
+    "url": "https://github.com/toolwind/tagged-combinators/issues"
   },
-  "homepage": "https://github.com/brandonmcconnell/tailwindcss-members#readme",
+  "homepage": "https://github.com/toolwind/tagged-combinators#readme",
   "dependencies": {
     "@types/node": "^20.4.1"
   },
