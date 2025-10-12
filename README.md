@@ -45,12 +45,11 @@ Then add it to your Tailwind config:
 
 <table>
 <tbody>
-<tr></tr>
 <tr>
 <td width="10000">
 <details name="enabling-tagged-combinators" open>
 
-<summary>&nbsp;&nbsp;<strong>Tailwind v4 (globals.css)</strong></summary><br>
+<summary>&nbsp;&nbsp;<strong>Tailwind v4 (<code>globals.css</code>)</strong></summary><br>
 
 ```css
 @plugin "@toolwind/tagged-combinators";
@@ -64,7 +63,7 @@ Then add it to your Tailwind config:
 <td width="10000">
 <details name="enabling-tagged-combinators">
 
-<summary>&nbsp;&nbsp;<strong>Tailwind v3 (tailwind.config.js)</strong></summary><br>
+<summary>&nbsp;&nbsp;<strong>Tailwind v3 (<code>tailwind.config.js</code>)</strong></summary><br>
 
 ```js
 module.exports = {
